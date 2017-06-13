@@ -1,0 +1,144 @@
+Feature: Insurance Quote Selector
+    User must have an option to select which Insurance Quote calculator to use
+
+Background:
+    Given I am on insurance type selection page	
+	
+Scenario: User Selects Car Insurance Quote
+    When I select car insurance quote
+	Then i should be redirected to car insurance qoute calculator
+	
+Scenario: User Selects Life Insurance Quote
+    When I select life insurance quote
+	Then i should be redirected to life insurance qoute calculator	
+	
+	
+---
+
+
+Feature: Car Insurance Quote Calculator
+    User must be able to get a quote on car insurance 
+	after filling-up necessary valid data
+	
+Background: 	
+    Given I am on car insurance quote calculator
+	
+Scenario Outline: User supplied valid data
+    When I supplied valid "<Make>", "<Year>", "<Driver Age>", "<Gender>", "<State>", "<Email>"
+        And process those data
+	Then I should be able to get a quote 
+	
+Examples:
+| Make | Year | Driver Age | Gender | State      | Email                |
+| Audi | 2017 | 30         | Male   | Queensland | test0001@amaysim.com |
+		
+Scenario: User supplied an invalid year	
+    When I supplied invalid year
+    Then I should be notified that I input invalid year
+	    And I cannot process those data	
+		
+Scenario: User supplied an invalid age	
+    When I supplied invalid age
+    Then I should be notified that I input invalid age
+	    And I cannot process those data	
+		
+Scenario: User supplied invalid email address	
+    When I supplied invalid email address
+    Then I should be notified that I input invalid email
+	    And I cannot process those data	
+
+		
+For Clarification
+- User was able to input negative values in fields: Year and Age
+
+Bug
+- Get quote button was enabled even year and age button has no value
+
+Enhancement:
+- It is good idea if Age and Year can only have minimum (default) value of what is acceptable to the company
+- User must not be able to press get quote button, if there are blank necessary fields
+
+
+
+---
+
+
+Feature: Life Insurance Quote Calculator
+    ser must be able to get a quote on life insurance 
+	after filling-up necessary valid data
+
+Background: 	
+    Given I am on life insurance quote calculator
+	
+Scenario Outline: User supplied valid data
+    When I supplied valid "<Age>", "<Gender>", "<Occupation>", "<State>", "<Email>"
+        And process those data
+	Then I should be able to get a quote 
+	
+Examples:
+| Age | Gender | Occupation | State      | Email                |
+| 30  | Male   | Low Risk   | Queensland | test0001@amaysim.com |
+
+Scenario: User supplied an invalid age	
+    When I supplied invalid age
+    Then I should be notified that I input invalid age
+	    And I cannot process those data	
+		
+Scenario: User supplied invalid email address	
+    When I supplied invalid email address
+    Then I should be notified that I input invalid email
+	    And I cannot process those data	
+		
+		
+---
+
+
+Feature: Quote Page
+    User must be able to view the the amount of insurance,
+	and must be given an option to buy it
+
+Scenario: User accepts the computed quote
+    Given I am in quote page
+	When I accept the calculated quote
+	Then I should be redirected to payment page
+	
+	
+
+---
+
+
+Feature: Payment Page
+	User must be able to pay the insurance
+	after filling up necessary data
+	
+Background:
+    Given I am on payment page	
+	
+Scenario: User Supplied Valid Credit Card Data
+    When I supplied valid data
+	    And proceed on payment
+	Then I should be notified if my payment is successful
+	
+Scenario: User supplied an invalid name	
+    When I supplied invalid name
+    Then I should be notified that I input invalid name
+	    And I cannot proceed on payment
+		
+Scenario: User supplied an invalid credit card number	
+    When I supplied invalid credit card number
+    Then I should be notified that I input invalid credit card number
+	    And I cannot proceed on payment	
+		
+Scenario: User supplied invalid card cvv	
+    When I supplied invalid card cvv
+    Then I should be notified that I input invalid card cvv
+	    And I cannot proceed on payment	
+	
+	
+Bug: if payment is greater than $50 Internal Server error was encountered
+
+clarrification:
+- is $50 dollar an applictaion limitation or credit provider limitation?
+
+	
+	
